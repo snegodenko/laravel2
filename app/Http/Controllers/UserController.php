@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\View\View;
 use Illuminate\Validation\Rules\Password;
+use App\Rules\MatchPassword;
 
 class UserController extends Controller
 {
@@ -63,6 +64,23 @@ class UserController extends Controller
             User::find($id)->delete();
             return redirect(route('user.view'));
         }
+    }
+
+    public function password(Request $request, $id)
+    {
+        if($request->isMethod('post')){
+            $user = User::where('id', $id)->first();
+            $request->validate([
+                'password' => ['required', new MatchPassword($user->password)],
+                'new-password' => ['required', Password::min(6)],
+                'confirm-password' => ['required', 'same:new-password']
+            ]);
+
+            if($user->update(['password' => Hash::make($request->input('new-password'))])){
+                $request->session()->flash('password', 'The password has been successfully changed!');
+            }
+        }
+        return redirect(route('user.update', ['id' => $id]));
     }
 
 

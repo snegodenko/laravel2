@@ -18,7 +18,7 @@ class EventController extends Controller
     {
         $users = User::all();
         if($request->isMethod('post')){
-            $this->valid($request);
+            $request->validate($this->rules());
 
             $model = new Event();
             $model->title = $request->input('title');
@@ -42,7 +42,7 @@ class EventController extends Controller
         $users = User::all();
 
         if($request->isMethod('post')){
-            $this->valid($request);
+            $request->validate($this->rules());
             $event->update($request->all());
             return redirect(route('event.update', ['id' => $id]));
         }
@@ -59,13 +59,14 @@ class EventController extends Controller
     }
 
 
-    protected function valid(Request $request)
+
+    protected function rules(): array
     {
-        $request->validate([
+        return [
             'title' => ['required', 'string'],
             'description' => ['string'],
             'dt_start' => ['required'],
             'dt_end' => ['required']
-        ]);
+        ];
     }
 }
