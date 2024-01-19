@@ -23,6 +23,7 @@
     }
 </style>
 
+
 <div class="container">
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
@@ -53,6 +54,20 @@
                             <li><a href="{{ route('event.view') }}" class="dropdown-item">View</a></li>
                         </ul>
                     </li>
+
+
+                    @if($request->user())
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{ route('profile') }}">Profile</a>
+                    </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ route('logout') }}">Logout</a>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{{ route('login') }}">Login</a>
+                        </li>
+                    @endif
 
                 </ul>
             </div>

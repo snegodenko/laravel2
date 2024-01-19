@@ -31,6 +31,7 @@
     </div>
 </form>
 
+
 @if($request->is('user/update/*'))
     <h3 class="mt-5">Update Password</h3>
     <form action="{{ route('user.update-password', ['id' => $user->id]) }}" method="POST">

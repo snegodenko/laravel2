@@ -32,4 +32,19 @@ Route::controller(\App\Http\Controllers\UserController::class)->group(function()
     Route::get('/user/delete/{id}', [\App\Http\Controllers\UserController::class, 'delete'])->name('user.delete');
 })->name('user');
 
+Route::middleware('guest')->group(function(){
+    Route::any('/login', [\App\Http\Controllers\AuthController::class, 'login'])->name('login');
+    Route::any('/register', [\App\Http\Controllers\RegisterController::class, 'register'])->name('register');
+    Route::any('/facebook/login', [\App\Http\Controllers\SocialAuthController::class, 'facebook'])->name('facebook.login');
+})->name('guest');
+
+Route::middleware('auth')->group(function(){
+    Route::get('/profile', [\App\Http\Controllers\ProfileController::class, 'profile'])->name('profile');
+    Route::get('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('logout');
+});
+
+Route::get('/policy', [\App\Http\Controllers\TermsController::class, 'policy'])->name('policy');
+Route::get('/terms', [\App\Http\Controllers\TermsController::class, 'terms'])->name('terms');
+
+
 
